@@ -27,13 +27,13 @@ Console.WriteLine("Started!\n");
 string? applicationBase = System.AppDomain.CurrentDomain.BaseDirectory;
 
 // transducer model
-string decoder = applicationBase + 
+string decoder = applicationBase +
     @"all_models\sherpa-onnx-zipformer-en-2023-04-01\decoder-epoch-99-avg-1.int8.onnx";
-string encoder = applicationBase + 
+string encoder = applicationBase +
     @"all_models\sherpa-onnx-zipformer-en-2023-04-01\encoder-epoch-99-avg-1.int8.onnx";
-string joiner = applicationBase + 
+string joiner = applicationBase +
     @"all_models\sherpa-onnx-zipformer-en-2023-04-01\joiner-epoch-99-avg-1.int8.onnx";
-string transducer_tokensFilePath = applicationBase + 
+string transducer_tokensFilePath = applicationBase +
     @"all_models\sherpa-onnx-zipformer-en-2023-04-01\tokens.txt";
 
 // paraformer model
@@ -62,40 +62,35 @@ nemo_ctc.model = nemo_ctc_modelFilePath;
 int num_threads = 2;
 string decoding_method = "greedy_search";
 
-if (string.IsNullOrEmpty(paraformer.model) 
-    || string.IsNullOrEmpty(paraformer.model) 
-    || string.IsNullOrEmpty(paraformer.model)) {
+if (string.IsNullOrEmpty(paraformer.model)
+    || string.IsNullOrEmpty(paraformer.model)
+    || string.IsNullOrEmpty(paraformer.model))
+{
     Console.WriteLine("Please specify at least one model");
     return;
 }
 
 OfflineRecognizer offlineRecognizer = new OfflineRecognizer(
     transducer,
-    transducer_tokensFilePath, 
-    num_threads:num_threads, 
+    transducer_tokensFilePath,
+    num_threads: num_threads,
     decoding_method: decoding_method);
 
 // batch decode
 int batch_size = 2;
 TimeSpan total_duration = new TimeSpan(0);
-SherpaOnnxOfflineStream[] streams = new SherpaOnnxOfflineStream[batch_size];
 List<string> wavFiles = new List<string>();
 for (int i = 0; i < batch_size; i++)
 {
-    string wavFilePath = 
-        string.Format(applicationBase + 
-        @"all_models/sherpa-onnx-conformer-en-2023-03-18\test_wavs\{0}.wav", 
+    string wavFilePath =
+        string.Format(applicationBase +
+        @"all_models/sherpa-onnx-zipformer-en-2023-04-01\test_wavs\{0}.wav",
         i);
-    wavFiles.Add(string.Format("{0}.wav",i));
-    SherpaOnnxOfflineStream stream = offlineRecognizer.CreateOfflineStream();
-    TimeSpan duration = new TimeSpan(0);
-    float[] samples = SherpaOnnx.Core.Utils.AudioHelper.GetTestSamples(wavFilePath, ref duration);
-    total_duration += duration;
-    offlineRecognizer.AcceptWaveform(stream, 16000, samples);
-    streams[i] = stream;
+    wavFiles.Add(wavFilePath);
 }
+OfflineStream[] streams = offlineRecognizer.CreateOfflineStream(wavFiles, ref total_duration);
 TimeSpan start_time = new TimeSpan(DateTime.Now.Ticks);
-offlineRecognizer.DecodeMultipleOfflineStreams(streams, streams.Length);
+offlineRecognizer.DecodeMultipleOfflineStreams(streams);
 List<OfflineRecognizerResultEntity> results = offlineRecognizer.GetResults(streams);
 TimeSpan end_time = new TimeSpan(DateTime.Now.Ticks);
 
@@ -108,8 +103,8 @@ foreach (var item in results.Zip<OfflineRecognizerResultEntity, string>(wavFiles
 
 double elapsed_milliseconds = end_time.TotalMilliseconds - start_time.TotalMilliseconds;
 double rtf = elapsed_milliseconds / total_duration.TotalMilliseconds;
-Console.WriteLine("num_threads:{0}",num_threads);
-Console.WriteLine("decoding_method:{0}",decoding_method);
+Console.WriteLine("num_threads:{0}", num_threads);
+Console.WriteLine("decoding_method:{0}", decoding_method);
 Console.WriteLine("elapsed_milliseconds:{0}", elapsed_milliseconds.ToString());
 Console.WriteLine("wave total_duration_milliseconds:{0}", total_duration.TotalMilliseconds.ToString());
 Console.WriteLine("Real time factor (RTF):{0}", rtf.ToString());

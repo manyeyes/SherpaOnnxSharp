@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj": {}
+    "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples-for-sherpa-onnx\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj": {}
   },
   "projects": {
-    "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj": {
+    "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples-for-sherpa-onnx\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj",
+        "projectUniqueName": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples-for-sherpa-onnx\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj",
         "projectName": "SherpaOnnx.Core",
-        "projectPath": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj",
+        "projectPath": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples-for-sherpa-onnx\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples\\SherpaOnnx.Core\\obj\\",
+        "outputPath": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples-for-sherpa-onnx\\SherpaOnnx.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

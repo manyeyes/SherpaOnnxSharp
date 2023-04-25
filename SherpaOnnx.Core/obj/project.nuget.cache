@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WWXO2sUtQO0Xl4KzA+mf6Eo/Ugl/RvMaEZdAVFagUumjYq5V6acDPs3NX3FsMORSubfvLqvUsAFIQvwK7dOe0w==",
+  "dgSpecHash": "a7mAfIQmF9YmCDpkpEleyBs+uauAyWqZKLJXMjC5xflAkxH5Eqomdrr5oXF74WTFTvIdFDuObJrPq9q8zAUbMw==",
   "success": true,
-  "projectFilePath": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj",
+  "projectFilePath": "D:\\Docker\\App\\manyeyes_mlnet\\csharp-api-examples-for-sherpa-onnx\\SherpaOnnx.Core\\SherpaOnnx.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
