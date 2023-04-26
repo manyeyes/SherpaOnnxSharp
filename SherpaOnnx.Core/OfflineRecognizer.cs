@@ -11,108 +11,55 @@ namespace SherpaOnnx.Core
     /// offline recognizer package
     /// Copyright (c)  2023 by manyeyes
     /// </summary>
-    public class OfflineRecognizer : OfflineBase
+    public class OfflineRecognizer<T> : OfflineBase
+        where T : class, new()
     {
-        private readonly ILogger<OfflineRecognizer> _logger;
+        private readonly ILogger<OfflineRecognizer<T>> _logger;
 
-        public OfflineRecognizer(SherpaOnnxOfflineTransducer transducer,
+        public OfflineRecognizer(T t,
             string tokensFilePath, string decoding_method = "greedy_search",
             int sample_rate = 16000, int feature_dim = 80,
             int num_threads = 2, bool debug = false)
         {
-            Trace.Assert(File.Exists(transducer.decoder_filename)
-                && File.Exists(transducer.encoder_filename)
-                && File.Exists(transducer.joiner_filename), "Please provide a model");
-            Trace.Assert(File.Exists(tokensFilePath), "Please provide a tokens");
-            Trace.Assert(num_threads > 0, "num_threads must be greater than 0");
-
-            SherpaOnnxOfflineParaformer paraformer = new SherpaOnnxOfflineParaformer();
-            paraformer.model = "";
-
-            SherpaOnnxOfflineNemoEncDecCtc nemo_ctc = new SherpaOnnxOfflineNemoEncDecCtc();
-            nemo_ctc.model = "";
-
-            SherpaOnnxOfflineModelConfig model_config = new SherpaOnnxOfflineModelConfig();
-            model_config.transducer = transducer;
-            model_config.paraformer = paraformer;
-            model_config.nemo_ctc = nemo_ctc;
-            model_config.num_threads = num_threads;
-            model_config.debug = debug;
-            model_config.tokens = tokensFilePath;
-
-            SherpaOnnxFeatureConfig feat_config = new SherpaOnnxFeatureConfig();
-            feat_config.sample_rate = sample_rate;
-            feat_config.feature_dim = feature_dim;
-
-            SherpaOnnxOfflineRecognizerConfig sherpaOnnxOfflineRecognizerConfig;
-            sherpaOnnxOfflineRecognizerConfig.decoding_method = decoding_method;
-            sherpaOnnxOfflineRecognizerConfig.feat_config = feat_config;
-            sherpaOnnxOfflineRecognizerConfig.model_config = model_config;
-
-            _offlineRecognizer =
-                DLL.SherpaOnnxSharp.CreateOfflineRecognizer(sherpaOnnxOfflineRecognizerConfig);
-            ILoggerFactory loggerFactory = new LoggerFactory();
-            _logger = new Logger<OfflineRecognizer>(loggerFactory);
-        }
-
-        public OfflineRecognizer(SherpaOnnxOfflineParaformer paraformer,
-            string tokensFilePath, string decoding_method = "greedy_search",
-            int sample_rate = 16000, int feature_dim = 80,
-            int num_threads = 2, bool debug = false)
-        {
-            Trace.Assert(File.Exists(paraformer.model), "Please provide a model");
-            Trace.Assert(File.Exists(tokensFilePath), "Please provide a tokens");
-            Trace.Assert(num_threads > 0, "num_threads must be greater than 0");
-
             SherpaOnnxOfflineTransducer transducer = new SherpaOnnxOfflineTransducer();
-            transducer.encoder_filename = "";
-            transducer.decoder_filename = "";
-            transducer.joiner_filename = "";
-
-            SherpaOnnxOfflineNemoEncDecCtc nemo_ctc = new SherpaOnnxOfflineNemoEncDecCtc();
-            nemo_ctc.model = "";
-
-            SherpaOnnxOfflineModelConfig model_config = new SherpaOnnxOfflineModelConfig();
-            model_config.transducer = transducer;
-            model_config.paraformer = paraformer;
-            model_config.nemo_ctc = nemo_ctc;
-            model_config.num_threads = num_threads;
-            model_config.debug = debug;
-            model_config.tokens = tokensFilePath;
-
-            SherpaOnnxFeatureConfig feat_config = new SherpaOnnxFeatureConfig();
-            feat_config.sample_rate = sample_rate;
-            feat_config.feature_dim = feature_dim;
-
-            SherpaOnnxOfflineRecognizerConfig sherpaOnnxOfflineRecognizerConfig;
-            sherpaOnnxOfflineRecognizerConfig.decoding_method = decoding_method;
-            sherpaOnnxOfflineRecognizerConfig.feat_config = feat_config;
-            sherpaOnnxOfflineRecognizerConfig.model_config = model_config;
-
-            _offlineRecognizer =
-                DLL.SherpaOnnxSharp.CreateOfflineRecognizer(sherpaOnnxOfflineRecognizerConfig);
-            ILoggerFactory loggerFactory = new LoggerFactory();
-            _logger = new Logger<OfflineRecognizer>(loggerFactory);
-        }
-
-        public OfflineRecognizer(SherpaOnnxOfflineNemoEncDecCtc nemo_ctc,
-            string tokensFilePath, string decoding_method = "greedy_search",
-            int sample_rate = 16000, int feature_dim = 80,
-            int num_threads = 2, bool debug = false)
-        {
-            Trace.Assert(File.Exists(nemo_ctc.model), "Please provide a model");
-            Trace.Assert(File.Exists(tokensFilePath), "Please provide a tokens");
-            Trace.Assert(num_threads > 0, "num_threads must be greater than 0");
-
-            SherpaOnnxOfflineTransducer transducer = new SherpaOnnxOfflineTransducer();
-            transducer.encoder_filename = "";
-            transducer.decoder_filename = "";
-            transducer.joiner_filename = "";
-
             SherpaOnnxOfflineParaformer paraformer = new SherpaOnnxOfflineParaformer();
-            paraformer.model = "";
-
+            SherpaOnnxOfflineNemoEncDecCtc nemo_ctc = new SherpaOnnxOfflineNemoEncDecCtc();
             SherpaOnnxOfflineModelConfig model_config = new SherpaOnnxOfflineModelConfig();
+            if (t is not null && t.GetType() == typeof(OfflineTransducer))
+            {
+                OfflineTransducer? offlineTransducer = t as OfflineTransducer;
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+                Trace.Assert(File.Exists(offlineTransducer.DecoderFilename)
+                && File.Exists(offlineTransducer.EncoderFilename)
+                && File.Exists(offlineTransducer.JoinerFilename), "Please provide a model");
+#pragma warning restore CS8602 // 解引用可能出现空引用。
+                Trace.Assert(File.Exists(tokensFilePath), "Please provide a tokens");
+                Trace.Assert(num_threads > 0, "num_threads must be greater than 0");
+                transducer.encoder_filename = offlineTransducer.EncoderFilename;
+                transducer.decoder_filename = offlineTransducer.DecoderFilename;
+                transducer.joiner_filename = offlineTransducer.JoinerFilename;
+            }
+            else if (t is not null && t.GetType() == typeof(OfflineParaformer))
+            {
+                OfflineParaformer? offlineParaformer = t as OfflineParaformer;
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+                Trace.Assert(File.Exists(offlineParaformer.Model), "Please provide a model");
+#pragma warning restore CS8602 // 解引用可能出现空引用。
+                Trace.Assert(File.Exists(tokensFilePath), "Please provide a tokens");
+                Trace.Assert(num_threads > 0, "num_threads must be greater than 0");
+                paraformer.model = offlineParaformer.Model;
+            }
+            else if (t is not null && t.GetType() == typeof(OfflineNemoEncDecCtc))
+            {
+                OfflineNemoEncDecCtc? offlineNemoEncDecCtc = t as OfflineNemoEncDecCtc;
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+                Trace.Assert(File.Exists(offlineNemoEncDecCtc.Model), "Please provide a model");
+#pragma warning restore CS8602 // 解引用可能出现空引用。
+                Trace.Assert(File.Exists(tokensFilePath), "Please provide a tokens");
+                Trace.Assert(num_threads > 0, "num_threads must be greater than 0");
+                nemo_ctc.model = offlineNemoEncDecCtc.Model;
+            }
+
             model_config.transducer = transducer;
             model_config.paraformer = paraformer;
             model_config.nemo_ctc = nemo_ctc;
@@ -132,7 +79,7 @@ namespace SherpaOnnx.Core
             _offlineRecognizer =
                 DLL.SherpaOnnxSharp.CreateOfflineRecognizer(sherpaOnnxOfflineRecognizerConfig);
             ILoggerFactory loggerFactory = new LoggerFactory();
-            _logger = new Logger<OfflineRecognizer>(loggerFactory);
+            _logger = new Logger<OfflineRecognizer<T>>(loggerFactory);
         }
 
         internal OfflineStream CreateOfflineStream()
@@ -242,7 +189,7 @@ namespace SherpaOnnx.Core
                 _offlineRecognizer.impl = IntPtr.Zero;
                 this._disposed = true;
                 base.Dispose();
-            }            
+            }
         }
     }
 }

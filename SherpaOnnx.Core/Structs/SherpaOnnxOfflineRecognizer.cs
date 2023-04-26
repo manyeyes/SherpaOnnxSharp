@@ -8,25 +8,39 @@ namespace SherpaOnnx.Core.Structs
     /// decoder-xxx.onnx, joiner-xxx.onnx, and tokens.txt for this struct
     /// from there.
     /// Copyright (c)  2023 by manyeyes
-    public struct SherpaOnnxOfflineTransducer
+    internal struct SherpaOnnxOfflineTransducer
     {
         public string encoder_filename;
         public string decoder_filename;
         public string joiner_filename;
+        public SherpaOnnxOfflineTransducer()
+        {
+            encoder_filename = "";
+            decoder_filename = "";
+            joiner_filename = "";
+        }
     };
 
-    public struct SherpaOnnxOfflineParaformer
+    internal struct SherpaOnnxOfflineParaformer
     {
         public string model;
+        public SherpaOnnxOfflineParaformer()
+        {
+            model = "";
+        }
     };
 
-    public struct SherpaOnnxOfflineNemoEncDecCtc
+    internal struct SherpaOnnxOfflineNemoEncDecCtc
     {
         public string model;
+        public SherpaOnnxOfflineNemoEncDecCtc()
+        {
+            model = "";
+        }
     };
 
 
-    public struct SherpaOnnxOfflineModelConfig
+    internal struct SherpaOnnxOfflineModelConfig
     {
         public SherpaOnnxOfflineTransducer transducer;
         public SherpaOnnxOfflineParaformer paraformer;
@@ -37,7 +51,7 @@ namespace SherpaOnnx.Core.Structs
     };
 
     /// It expects 16 kHz 16-bit single channel wave format.
-    public struct SherpaOnnxFeatureConfig
+    internal struct SherpaOnnxFeatureConfig
     {
         /// Sample rate of the input data. MUST match the one expected
         /// by the model. For instance, it should be 16000 for models provided
@@ -49,7 +63,7 @@ namespace SherpaOnnx.Core.Structs
         public int feature_dim;
     };
 
-    public struct SherpaOnnxOfflineRecognizerConfig
+    internal struct SherpaOnnxOfflineRecognizerConfig
     {
         public SherpaOnnxFeatureConfig feat_config;
         public SherpaOnnxOfflineModelConfig model_config;
@@ -59,18 +73,18 @@ namespace SherpaOnnx.Core.Structs
 
     };
 
-    public struct SherpaOnnxOfflineRecognizer
+    internal struct SherpaOnnxOfflineRecognizer
     {
         public IntPtr impl;
     };
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct SherpaOnnxOfflineStream
+    internal struct SherpaOnnxOfflineStream
     {
         public IntPtr impl;
     };
 
-    public struct SherpaOnnxOfflineRecognizerResult
+    internal struct SherpaOnnxOfflineRecognizerResult
     {
         public IntPtr text;
         public int text_len;
