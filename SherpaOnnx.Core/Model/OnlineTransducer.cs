@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SherpaOnnx.Core.Model
 {
-    public class OfflineTransducer
+    public class OnlineTransducer
     {
         private string encoderFilename = string.Empty;
         private string decoderFilename = string.Empty;

@@ -7,7 +7,7 @@ namespace SherpaOnnx.Core.DLL
     /// csharp api for sherpa-onnx 
     /// Copyright (c)  2023 by manyeyes
     /// </summary>
-    internal static class SherpaOnnxSharp
+    internal static partial class SherpaOnnxSharp
     {
         private const string dllName = @"\lib\SherpaOnnxSharp.dll";
 
@@ -18,13 +18,13 @@ namespace SherpaOnnx.Core.DLL
         internal static extern SherpaOnnxOfflineStream CreateOfflineStream(SherpaOnnxOfflineRecognizer offlineRecognizer);
 
         [DllImport(dllName, EntryPoint = "AcceptWaveform", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void AcceptWaveform(SherpaOnnxOfflineStream stream, int sample_rate,float[] samples, int samples_size);
+        internal static extern void AcceptWaveform(SherpaOnnxOfflineStream stream, int sample_rate, float[] samples, int samples_size);
 
         [DllImport(dllName, EntryPoint = "DecodeOfflineStream", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DecodeOfflineStream(SherpaOnnxOfflineRecognizer recognizer, SherpaOnnxOfflineStream stream);
 
         [DllImport(dllName, EntryPoint = "DecodeMultipleOfflineStreams", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void DecodeMultipleOfflineStreams(SherpaOnnxOfflineRecognizer recognizer,IntPtr
+        internal static extern void DecodeMultipleOfflineStreams(SherpaOnnxOfflineRecognizer recognizer, IntPtr
          streams, int n);
 
         [DllImport(dllName, EntryPoint = "GetOfflineStreamResult", CallingConvention = CallingConvention.Cdecl)]
@@ -38,6 +38,6 @@ namespace SherpaOnnx.Core.DLL
 
         [DllImport(dllName, EntryPoint = "DestroyOfflineRecognizer", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DestroyOfflineRecognizer(SherpaOnnxOfflineRecognizer offlineRecognizer);
-        
+
     }
 }

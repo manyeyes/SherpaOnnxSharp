@@ -111,12 +111,12 @@ nemo Usage:
             string? applicationBase = System.AppDomain.CurrentDomain.BaseDirectory;
             List<string> wavFiles = new List<string>();
             Dictionary<string, string> argsDict = GetDict(args, applicationBase, ref wavFiles);
-            string decoder = argsDict.ContainsKey("decoder") ? applicationBase + argsDict["decoder"] : "";
-            string encoder = argsDict.ContainsKey("decoder") ? applicationBase + argsDict["decoder"] : "";
-            string joiner = argsDict.ContainsKey("decoder") ? applicationBase + argsDict["decoder"] : "";
-            string paraformer = argsDict.ContainsKey("paraformer") ? applicationBase + argsDict["paraformer"] : "";
-            string nemo_ctc = argsDict.ContainsKey("nemo_ctc") ? applicationBase + argsDict["nemo_ctc"] : "";
-            string tokens = argsDict.ContainsKey("tokens") ? applicationBase + argsDict["tokens"] : "";
+            string decoder = argsDict.ContainsKey("decoder") ? Path.Combine(applicationBase, argsDict["decoder"]) : "";
+            string encoder = argsDict.ContainsKey("decoder") ? Path.Combine(applicationBase, argsDict["decoder"]) : "";
+            string joiner = argsDict.ContainsKey("decoder") ? Path.Combine(applicationBase, argsDict["decoder"]) : "";
+            string paraformer = argsDict.ContainsKey("paraformer") ? Path.Combine(applicationBase, argsDict["paraformer"]) : "";
+            string nemo_ctc = argsDict.ContainsKey("nemo_ctc") ? Path.Combine(applicationBase, argsDict["nemo_ctc"]) : "";
+            string tokens = argsDict.ContainsKey("tokens") ? Path.Combine(applicationBase, argsDict["tokens"]) : "";
             string num_threads = argsDict.ContainsKey("num_threads") ? argsDict["num_threads"] : "";
             string decoding_method = argsDict.ContainsKey("decoding_method") ? argsDict["decoding_method"] : "";
             string debug = argsDict.ContainsKey("debug") ? argsDict["debug"] : "";
@@ -222,7 +222,7 @@ nemo Usage:
                 {
                     if (!string.IsNullOrEmpty(ss[0]))
                     {
-                        wavFiles.Add(applicationBase + ss[0].Trim(new char[] { '-', '`', ' ' }));
+                        wavFiles.Add(Path.Combine(applicationBase, ss[0].Trim(new char[] { '-', '`', ' ' })));
                     }
                 }
                 else
