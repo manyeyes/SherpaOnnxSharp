@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // Copyright (c)  2023 by manyeyes
 using SherpaOnnx.Core;
-using SherpaOnnx.Core.Structs;
 using SherpaOnnx.Core.Model;
 
 /// Please refer to
@@ -59,37 +58,22 @@ using SherpaOnnx.Core.Model;
 
 namespace SherpaOnnx.Examples
 {
-    internal class Program
+    internal class OnlineDecodeFiles
     {
         static void Main(string[] args)
         {
             string usage = @"
 -----------------------------
 transducer Usage:
-  --tokens=./all_models/sherpa-onnx-conformer-en-2023-03-18/tokens.txt `
-  --encoder=./all_models/sherpa-onnx-conformer-en-2023-03-18/encoder-epoch-99-avg-1.onnx `
-  --decoder=./all_models/sherpa-onnx-conformer-en-2023-03-18/decoder-epoch-99-avg-1.onnx `
-  --joiner=./all_models/sherpa-onnx-conformer-en-2023-03-18/joiner-epoch-99-avg-1.onnx `
+  --tokens=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/tokens.txt `
+  --encoder=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/encoder-epoch-99-avg-1.onnx `
+  --decoder=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/decoder-epoch-99-avg-1.onnx `
+  --joiner=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/joiner-epoch-99-avg-1.onnx `
   --num-threads=2 `
-  --decoding-method=greedy_search `
+  --decoding-method=modified_beam_search `
   --debug=false `
-  ./all_models/sherpa-onnx-conformer-en-2023-03-18/test_wavs/0.wav
-
-paraformer Usage:
-  --tokens=./all_models/paraformer-onnxruntime-python-example/tokens.txt `
-  --paraformer=./all_models/paraformer-onnxruntime-python-example/model.onnx `
-  --num-threads=2 `
-  --decoding-method=greedy_search `
-  --debug=false `
-  ./all_models/paraformer-onnxruntime-python-example/test_wavs/0.wav
-
-nemo Usage:
-  --tokens=./all_models/sherpa-onnx-nemo-ctc-en-citrinet-512/tokens.txt `
-  --nemo_ctc=./all_models/sherpa-onnx-nemo-ctc-en-citrinet-512/model.onnx `
-  --num-threads=2 `
-  --decoding-method=greedy_search `
-  --debug=false `
-  ./all_models/sherpa-onnx-nemo-ctc-en-citrinet-512/test_wavs/0.wav
+  ./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/test_wavs/0.wav `
+  ./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/test_wavs/1.wav
 -----------------------------
 ";
             if (args.Length == 0)
@@ -112,8 +96,8 @@ nemo Usage:
             List<string> wavFiles = new List<string>();
             Dictionary<string, string> argsDict = GetDict(args, applicationBase, ref wavFiles);
             string decoder = argsDict.ContainsKey("decoder") ? Path.Combine(applicationBase, argsDict["decoder"]) : "";
-            string encoder = argsDict.ContainsKey("decoder") ? Path.Combine(applicationBase, argsDict["decoder"]) : "";
-            string joiner = argsDict.ContainsKey("decoder") ? Path.Combine(applicationBase, argsDict["decoder"]) : "";
+            string encoder = argsDict.ContainsKey("encoder") ? Path.Combine(applicationBase, argsDict["encoder"]) : "";
+            string joiner = argsDict.ContainsKey("joiner") ? Path.Combine(applicationBase, argsDict["joiner"]) : "";
             string paraformer = argsDict.ContainsKey("paraformer") ? Path.Combine(applicationBase, argsDict["paraformer"]) : "";
             string nemo_ctc = argsDict.ContainsKey("nemo_ctc") ? Path.Combine(applicationBase, argsDict["nemo_ctc"]) : "";
             string tokens = argsDict.ContainsKey("tokens") ? Path.Combine(applicationBase, argsDict["tokens"]) : "";
@@ -137,7 +121,7 @@ nemo Usage:
             bool isDebug = false;
             bool.TryParse(debug, out isDebug);
 
-            string decodingMethod = string.IsNullOrEmpty(decoding_method) ? "" : "greedy_search";
+            string decodingMethod = string.IsNullOrEmpty(decoding_method) ? "" : decoding_method;
 
             if ((string.IsNullOrEmpty(encoder) || string.IsNullOrEmpty(decoder) || string.IsNullOrEmpty(joiner))
                 && string.IsNullOrEmpty(paraformer)
@@ -150,51 +134,48 @@ nemo Usage:
             TimeSpan total_duration = TimeSpan.Zero;
             TimeSpan start_time = TimeSpan.Zero;
             TimeSpan end_time = TimeSpan.Zero;
-            List<OfflineRecognizerResultEntity> results = new List<OfflineRecognizerResultEntity>();
+            List<OnlineRecognizerResultEntity> results = new List<OnlineRecognizerResultEntity>();
             if (!(string.IsNullOrEmpty(encoder) || string.IsNullOrEmpty(decoder) || string.IsNullOrEmpty(joiner)))
             {
-                OfflineRecognizer<OfflineTransducer> offlineRecognizer = new OfflineRecognizer<OfflineTransducer>(
-                offlineTransducer,
+                OnlineTransducer onlineTransducer = new OnlineTransducer();
+                onlineTransducer.EncoderFilename = encoder;
+                onlineTransducer.DecoderFilename = decoder;
+                onlineTransducer.JoinerFilename = joiner;
+                //test online
+                OnlineRecognizer<OnlineTransducer> onlineRecognizer = new OnlineRecognizer<OnlineTransducer>(
+                onlineTransducer,
                 tokens,
                 num_threads: numThreads,
                 debug: isDebug,
                 decoding_method: decodingMethod);
-                OfflineStream[] streams = offlineRecognizer.CreateOfflineStream(wavFiles, ref total_duration);
+                List<float[]> samplesList = new List<float[]>();
+                foreach (string wavFile in wavFiles)
+                {
+                    TimeSpan duration = TimeSpan.Zero;
+                    float[] samples = Utils.AudioHelper.GetFileSamples(wavFile, ref duration);
+                    samplesList.Add(samples);
+                    total_duration += duration;
+                }
                 start_time = new TimeSpan(DateTime.Now.Ticks);
-                offlineRecognizer.DecodeMultipleOfflineStreams(streams);
-                results = offlineRecognizer.GetResults(streams);
+                List<OnlineStream> streams = new List<OnlineStream>();
+                foreach (float[] samples in samplesList)
+                {
+                    OnlineStream stream = onlineRecognizer.CreateStream();
+                    onlineRecognizer.AcceptWaveForm(stream, 16000, samples);
+                    streams.Add(stream);
+                    onlineRecognizer.InputFinished(stream);
+                }
+                onlineRecognizer.DecodeMultipleStreams(streams);
+                results = onlineRecognizer.GetResults(streams);
+                foreach (OnlineRecognizerResultEntity result in results)
+                {
+                    Console.WriteLine(result.text);
+                }
                 end_time = new TimeSpan(DateTime.Now.Ticks);
             }
-            else if (!string.IsNullOrEmpty(paraformer))
-            {
-                OfflineRecognizer<OfflineParaformer> offlineRecognizer = new OfflineRecognizer<OfflineParaformer>(
-                offlineParaformer,
-                tokens,
-                num_threads: numThreads,
-                debug: isDebug,
-                decoding_method: decodingMethod);
-                OfflineStream[] streams = offlineRecognizer.CreateOfflineStream(wavFiles, ref total_duration);
-                start_time = new TimeSpan(DateTime.Now.Ticks);
-                offlineRecognizer.DecodeMultipleOfflineStreams(streams);
-                results = offlineRecognizer.GetResults(streams);
-                end_time = new TimeSpan(DateTime.Now.Ticks);
-            }
-            else if (!string.IsNullOrEmpty(nemo_ctc))
-            {
-                OfflineRecognizer<OfflineNemoEncDecCtc> offlineRecognizer = new OfflineRecognizer<OfflineNemoEncDecCtc>(
-                offlineNemoEncDecCtc,
-                tokens,
-                num_threads: numThreads,
-                debug: isDebug,
-                decoding_method: decodingMethod);
-                OfflineStream[] streams = offlineRecognizer.CreateOfflineStream(wavFiles, ref total_duration);
-                start_time = new TimeSpan(DateTime.Now.Ticks);
-                offlineRecognizer.DecodeMultipleOfflineStreams(streams);
-                results = offlineRecognizer.GetResults(streams);
-                end_time = new TimeSpan(DateTime.Now.Ticks);
-            }
+            
 
-            foreach (var item in results.Zip<OfflineRecognizerResultEntity, string>(wavFiles))
+            foreach (var item in results.Zip<OnlineRecognizerResultEntity, string>(wavFiles))
             {
                 Console.WriteLine("wavFile:{0}", item.Second);
                 Console.WriteLine("text:{0}", item.First.text.ToLower());
