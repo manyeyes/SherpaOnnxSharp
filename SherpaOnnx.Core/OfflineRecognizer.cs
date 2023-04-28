@@ -88,31 +88,15 @@ namespace SherpaOnnx.Core
             return new OfflineStream(stream);
         }
 
-        internal SherpaOnnxOfflineStream[] CreateOfflineStream(List<float[]> samplesList)
+        public OfflineStream[] CreateOfflineStream(List<float[]> samplesList)
         {
             int batch_size = samplesList.Count;
-            SherpaOnnxOfflineStream[] streams = new SherpaOnnxOfflineStream[batch_size];
+            OfflineStream[] streams = new OfflineStream[batch_size];
             List<string> wavFiles = new List<string>();
             for (int i = 0; i < batch_size; i++)
             {
                 OfflineStream stream = CreateOfflineStream();
                 AcceptWaveform(stream._offlineStream, 16000, samplesList[i]);
-                streams[i] = stream._offlineStream;
-            }
-            return streams;
-        }
-
-        public OfflineStream[] CreateOfflineStream(List<string> wavFiles, ref TimeSpan total_duration)
-        {
-            int batch_size = wavFiles.Count;
-            OfflineStream[] streams = new OfflineStream[batch_size];
-            for (int i = 0; i < batch_size; i++)
-            {
-                OfflineStream stream = CreateOfflineStream();
-                TimeSpan duration = new TimeSpan(0);
-                float[] samples = SherpaOnnx.Core.Utils.AudioHelper.GetTestSamples(wavFiles[i], ref duration);
-                total_duration += duration;
-                AcceptWaveform(stream._offlineStream, 16000, samples);
                 streams[i] = stream;
             }
             return streams;

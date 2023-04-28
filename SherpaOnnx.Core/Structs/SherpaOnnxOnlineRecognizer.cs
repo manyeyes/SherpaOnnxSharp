@@ -41,7 +41,7 @@ namespace SherpaOnnx.Core.Structs
     //    public int feature_dim;
     //};
 
-    internal struct SherpaOnnxOnlineRecognizerConfig//<T> where T : struct, IEquatable<T>
+    internal struct SherpaOnnxOnlineRecognizerConfig
     {
         public SherpaOnnxFeatureConfig feat_config;
         public SherpaOnnxOnlineModelConfig model_config;

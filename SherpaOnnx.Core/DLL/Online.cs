@@ -23,7 +23,7 @@ namespace SherpaOnnx.Core.DLL
         /// @param recognizer  A pointer returned by CreateOnlineRecognizer()
         /// @return Return a pointer to an OnlineStream. The user has to invoke
         ///         DestroyOnlineStream() to free it to avoid memory leak.
-        [DllImport(dllName, EntryPoint = "SherpaOnnxOnlineStream", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(dllName, EntryPoint = "CreateOnlineStream", CallingConvention = CallingConvention.Cdecl)]
         internal static extern SherpaOnnxOnlineStream CreateOnlineStream(
             SherpaOnnxOnlineRecognizer recognizer);
 
