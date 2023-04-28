@@ -30,20 +30,6 @@ namespace SherpaOnnx.Examples.Utils
             return wavdata;
         }
 
-        //public static List<float[]> GetSamplesListOnfile(List<string> wavFiles, ref TimeSpan duration)
-        //{
-        //    List<float[]> wavdatas = new List<float[]>();
-        //    foreach (string wavFile in wavFiles)
-        //    {
-        //        TimeSpan curDuration = TimeSpan.Zero;
-        //        float[] wavdata = GetSamples(wavFile, ref curDuration);
-        //        duration += curDuration;
-        //        wavdatas.Add(wavdata);
-        //    }
-        //    return wavdatas;
-        //}
-
-
         public static List<float[]> GetChunkSamplesList(string wavFilePath, ref TimeSpan duration)
         {
             List<float[]> wavdatas = new List<float[]>();
@@ -80,30 +66,5 @@ namespace SherpaOnnx.Examples.Utils
             }
             return wavdatas;
         }
-
-        //public static List<float[]> GetSamplesListOnchunk(string wavFilePath, ref TimeSpan duration)
-        //{
-        //    List<float[]> wavdatas = new List<float[]>();
-        //    if (!File.Exists(wavFilePath))
-        //    {
-        //        Trace.Assert(File.Exists(wavFilePath), "file does not exist:" + wavFilePath);
-        //        wavdatas.Add(new float[1]);
-        //        return wavdatas;
-        //    }
-        //    AudioFileReader _audioFileReader = new AudioFileReader(wavFilePath);
-        //    byte[] datas = new byte[_audioFileReader.Length];
-        //    int chunkSize = datas.Length / sizeof(float);
-        //    int chunkNum = 1;//(int)Math.Ceiling((double)datas.Length / chunkSize)-1;
-        //    for (int i = 0; i < chunkNum; i++)
-        //    {
-        //        _audioFileReader.Read(datas, i * chunkSize, datas.Length);
-        //        duration += _audioFileReader.TotalTime;
-        //        float[] wavdata = new float[chunkSize];
-        //        Buffer.BlockCopy(datas, i * chunkSize, wavdata, 0, datas.Length);
-        //        wavdatas.Add(wavdata);
-        //    }
-
-        //    return wavdatas;
-        //}
     }
 }
