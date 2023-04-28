@@ -13,47 +13,24 @@ using SherpaOnnx.Core.Model;
 /// (The directory where the application runs)
 /// [/path/to]=System.AppDomain.CurrentDomain.BaseDirectory
 /// cd /path/to
-/// git clone https://huggingface.co/csukuangfj/sherpa-onnx-zipformer-en-2023-04-01
-/// git clone https://huggingface.co/csukuangfj/paraformer-onnxruntime-python-example
-/// git clone https://huggingface.co/csukuangfj/sherpa-onnx-nemo-ctc-en-citrinet-512
+/// git clone https://huggingface.co/csukuangfj/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20
 
 /// NuGet for SherpaOnnx.Core
-/// PM > Install-Package NAudio -version 2.1.0 -Project SherpaOnnx.Core
+/// PM > Install-Package NAudio -version 2.1.0 -Project SherpaOnnx.Examples
 /// PM > Install-Package Microsoft.Extensions.Logging -version 7.0.0 -SherpaOnnx.Core
 
 // transducer Usage:
 /*
  .\SherpaOnnx.Examples.exe `
-  --tokens=./all_models/sherpa-onnx-conformer-en-2023-03-18/tokens.txt `
-  --encoder=./all_models/sherpa-onnx-conformer-en-2023-03-18/encoder-epoch-99-avg-1.onnx `
-  --decoder=./all_models/sherpa-onnx-conformer-en-2023-03-18/decoder-epoch-99-avg-1.onnx `
-  --joiner=./all_models/sherpa-onnx-conformer-en-2023-03-18/joiner-epoch-99-avg-1.onnx `
+  --tokens=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/tokens.txt `
+  --encoder=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/encoder-epoch-99-avg-1.onnx `
+  --decoder=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/decoder-epoch-99-avg-1.onnx `
+  --joiner=./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/joiner-epoch-99-avg-1.onnx `
   --num-threads=2 `
-  --decoding-method=greedy_search `
+  --decoding-method=modified_beam_search `
   --debug=false `
-  ./all_models/sherpa-onnx-conformer-en-2023-03-18/test_wavs/0.wav
- */
-
-// paraformer Usage:
-/*
- .\SherpaOnnx.Examples.exe `
-  --tokens=./all_models/paraformer-onnxruntime-python-example/tokens.txt `
-  --paraformer=./all_models/paraformer-onnxruntime-python-example/model.onnx `
-  --num-threads=2 `
-  --decoding-method=greedy_search `
-  --debug=false `
-  ./all_models/paraformer-onnxruntime-python-example/test_wavs/0.wav
- */
-
-// paraformer Usage:
-/*
- .\SherpaOnnx.Examples.exe `
-  --tokens=./all_models/paraformer-onnxruntime-python-example/tokens.txt `
-  --paraformer=./all_models/paraformer-onnxruntime-python-example/model.onnx `
-  --num-threads=2 `
-  --decoding-method=greedy_search `
-  --debug=false `
-  ./all_models/paraformer-onnxruntime-python-example/test_wavs/0.wav
+  ./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/test_wavs/0.wav `
+  ./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/test_wavs/1.wav
  */
 
 namespace SherpaOnnx.Examples
