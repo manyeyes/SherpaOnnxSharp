@@ -203,44 +203,6 @@ transducer Usage:
             }
             TimeSpan end_time = new TimeSpan(DateTime.Now.Ticks);
         }
-
-        public void ssss2(string encoder, string decoder, string joiner, string tokens, int numThreads, bool isDebug, string decodingMethod, List<string> wavFiles, ref TimeSpan total_duration)
-        {
-            OnlineTransducer onlineTransducer = new OnlineTransducer();
-            onlineTransducer.EncoderFilename = encoder;
-            onlineTransducer.DecoderFilename = decoder;
-            onlineTransducer.JoinerFilename = joiner;
-            //test online
-            OnlineRecognizer<OnlineTransducer> onlineRecognizer = new OnlineRecognizer<OnlineTransducer>(
-            onlineTransducer,
-            tokens,
-            num_threads: numThreads,
-            debug: isDebug,
-            decoding_method: decodingMethod);
-            List<float[]> samplesList = new List<float[]>();
-            foreach (string wavFile in wavFiles)
-            {
-                TimeSpan duration = TimeSpan.Zero;
-                float[] samples = Utils.AudioHelper.GetFileSamples(wavFile, ref duration);
-                samplesList.Add(samples);
-                total_duration += duration;
-            }
-            TimeSpan start_time = new TimeSpan(DateTime.Now.Ticks);
-            List<OnlineStream> streams = new List<OnlineStream>();
-            foreach (float[] samples in samplesList)
-            {
-                OnlineStream stream = onlineRecognizer.CreateStream();
-                onlineRecognizer.AcceptWaveForm(stream,16000 ,samples);
-                streams.Add(stream);
-                onlineRecognizer.InputFinished(stream);
-            }            
-            onlineRecognizer.DecodeMultipleStreams(streams);
-            List<OnlineRecognizerResultEntity> results = onlineRecognizer.GetResults(streams);
-            foreach (OnlineRecognizerResultEntity result in results)
-            {
-                Console.WriteLine(result.text);
-            }
-            TimeSpan end_time = new TimeSpan(DateTime.Now.Ticks);
-        }
+        
     }
 }

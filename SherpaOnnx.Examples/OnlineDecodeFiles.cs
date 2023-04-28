@@ -170,6 +170,38 @@ transducer Usage:
             Console.WriteLine("End!");
         }
 
+        public void AnotherWayOfDecodeFiles(string encoder, string decoder, string joiner, string tokens, int numThreads, bool isDebug, string decodingMethod, List<string> wavFiles, ref TimeSpan total_duration)
+        {
+            OnlineTransducer onlineTransducer = new OnlineTransducer();
+            onlineTransducer.EncoderFilename = encoder;
+            onlineTransducer.DecoderFilename = decoder;
+            onlineTransducer.JoinerFilename = joiner;
+            //test online
+            OnlineRecognizer<OnlineTransducer> onlineRecognizer = new OnlineRecognizer<OnlineTransducer>(
+            onlineTransducer,
+            tokens,
+            num_threads: numThreads,
+            debug: isDebug,
+            decoding_method: decodingMethod);
+            List<float[]> samplesList = new List<float[]>();
+            foreach (string wavFile in wavFiles)
+            {
+                TimeSpan duration = TimeSpan.Zero;
+                float[] samples = Utils.AudioHelper.GetFileSamples(wavFile, ref duration);
+                samplesList.Add(samples);
+                total_duration += duration;
+            }
+            TimeSpan start_time = new TimeSpan(DateTime.Now.Ticks);
+            List<OnlineStream> streams = onlineRecognizer.CreateStreams(samplesList);
+            onlineRecognizer.DecodeMultipleStreams(streams);
+            List<OnlineRecognizerResultEntity> results = onlineRecognizer.GetResults(streams);
+            foreach (OnlineRecognizerResultEntity result in results)
+            {
+                Console.WriteLine(result.text);
+            }
+            TimeSpan end_time = new TimeSpan(DateTime.Now.Ticks);
+        }
+
         static Dictionary<string, string> GetDict(string[] args, string applicationBase, ref List<string> wavFiles)
         {
             Dictionary<string, string> argsDict = new Dictionary<string, string>();
