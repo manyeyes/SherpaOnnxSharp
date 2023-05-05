@@ -19,7 +19,10 @@ namespace SherpaOnnx.Core
         public OnlineRecognizer(T t,
             string tokensFilePath, string decoding_method = "greedy_search",
             int sample_rate = 16000, int feature_dim = 80,
-            int num_threads = 2, bool debug = false, int max_active_paths = 4)
+            int num_threads = 2, bool debug = false, 
+            int max_active_paths = 4, int enable_endpoint=0,
+            int rule1_min_trailing_silence=0,int rule2_min_trailing_silence=0,
+            int rule3_min_utterance_length=0)
         {
             SherpaOnnxOnlineTransducer transducer = new SherpaOnnxOnlineTransducer();
             SherpaOnnxOnlineModelConfig model_config = new SherpaOnnxOnlineModelConfig();
@@ -53,10 +56,10 @@ namespace SherpaOnnx.Core
             sherpaOnnxOnlineRecognizerConfig.model_config = model_config;
             sherpaOnnxOnlineRecognizerConfig.max_active_paths = max_active_paths;
             //endpoint
-            sherpaOnnxOnlineRecognizerConfig.enable_endpoint = 0;// enable_endpoint;
-            sherpaOnnxOnlineRecognizerConfig.rule1_min_trailing_silence = 0;// rule1_min_trailing_silence;
-            sherpaOnnxOnlineRecognizerConfig.rule2_min_trailing_silence = 0;// rule2_min_trailing_silence;
-            sherpaOnnxOnlineRecognizerConfig.rule3_min_utterance_length = 0;// rule3_min_utterance_length;
+            sherpaOnnxOnlineRecognizerConfig.enable_endpoint = enable_endpoint;
+            sherpaOnnxOnlineRecognizerConfig.rule1_min_trailing_silence = rule1_min_trailing_silence;
+            sherpaOnnxOnlineRecognizerConfig.rule2_min_trailing_silence = rule2_min_trailing_silence;
+            sherpaOnnxOnlineRecognizerConfig.rule3_min_utterance_length = rule3_min_utterance_length;
 
             _onlineRecognizer =
                 DLL.SherpaOnnxSharp.CreateOnlineRecognizer(sherpaOnnxOnlineRecognizerConfig);
