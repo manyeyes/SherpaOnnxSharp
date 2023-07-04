@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "KWrxJlyWgGsmxQV7qLHbcoB5p13EX2GDYq3Z8Ki5u9pt/Zv/HnV1etEATf1GlF+4ozievUoYQwhBtF/u84ztYA==",
+  "success": true,
+  "projectFilePath": "D:\\Docker\\App\\manyeyes_mlnet\\git-kit\\SherpaOnnxSharp\\SherpaOnnxSharp\\SherpaOnnxSharp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0\\microsoft.extensions.logging.7.0.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.ml.onnxruntime\\1.14.1\\microsoft.ml.onnxruntime.1.14.1.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.ml.onnxruntime.managed\\1.14.1\\microsoft.ml.onnxruntime.managed.1.14.1.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
