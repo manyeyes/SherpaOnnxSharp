@@ -1,6 +1,6 @@
 # SherpaOnnxSharp
 ## 简介
-新一代Kaldi包含Lhotse、k2、Icefall、sherpa，是有着良好的生态且专于ASR的开源项目。其中sherpa_onnx是新一代Kaldi中用于部署onnx模型的语音识别服务，作者使用c、c++开发，性能优异，且支持众多优秀的开源免费模型。本项目用c#语言将sherpa_onnx的c-api进行封装，使得在c#中应用语音识别模型更加方便。
+新一代Kaldi包含Lhotse、k2、Icefall、sherpa，是有着良好的生态且专于ASR的开源项目。其中sherpa-onnx是新一代Kaldi中用于部署onnx模型的语音识别服务，作者使用c、c++开发，性能优异，且支持众多优秀的开源免费模型。本项目用c#语言将sherpa-onnx的c-api进行封装，使得在c#中应用语音识别模型更加方便。
 ## 如何使用
 ### 1.在项目中引用
 ```
