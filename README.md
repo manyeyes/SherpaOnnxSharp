@@ -1,13 +1,13 @@
 # SherpaOnnxSharp
-##简介
+## 简介
 新一代Kaldi包含Lhotse、k2、Icefall、sherpa，是有着良好的生态且专于ASR的开源项目。其中sherpa_onnx是新一代Kaldi中用于部署onnx模型的语音识别服务，作者使用c、c++开发，性能优异，且支持众多优秀的开源免费模型。本项目用c#语言将sherpa_onnx的c-api进行封装，使得在c#中应用语音识别模型更加方便。
-##如何使用
-###1.在项目中引用
+## 如何使用
+### 1.在项目中引用
 ```
 using SherpaOnnxSharp;
 using SherpaOnnxSharp.Model;
 ```
-###2.调用
+### 2.调用
 实例化：
 ```
 OfflineRecognizer<OfflineTransducer> offlineRecognizer = new OfflineRecognizer<OfflineTransducer>(
@@ -36,8 +36,8 @@ offlineRecognizer.DecodeMultipleOfflineStreams(streams);
  ```
 results = offlineRecognizer.GetResults(streams);
 ```
-##运行示例
-###1.流式识别:
+## 运行示例
+### 1.流式识别:
 运行：SherpaOnnxSharp.Examples.OnlineDecodeFile
 出现cmd窗口后，根据提示输入命令。
 transducer Usage:
@@ -51,7 +51,7 @@ transducer Usage:
   --debug=false `
   ./all_models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/test_wavs/0.wav
 ```
-####运行效果
+运行结果：
 
 ```
 昨
