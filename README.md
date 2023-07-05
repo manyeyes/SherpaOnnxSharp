@@ -93,8 +93,8 @@ transducer Usage:
 昨天是▁MONDAY▁TODAY▁IS礼拜二▁THE▁DAY▁AFTER▁TOMORROW是星期三
 num_threads:2
 decoding_method:modified_beam_search
-elapsed_milliseconds:1996.171875
-wave total_duration_milliseconds:412178.125
-Real time factor (RTF):0.0048429835401866605
+elapsed_milliseconds:1984.3671875
+wave total_duration_milliseconds:10053.125
+Real time factor (RTF):0.19738809449797948
 End!
 ```
